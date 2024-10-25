@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Trash } from "lucide-react";
 import axios from "axios";
-
+import Image from "next/image";
 const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [freeDelivery, setFreeDelivery] = useState(true);
@@ -235,10 +235,12 @@ const AddProduct = () => {
                               <div className="mt-4 grid grid-cols-2 gap-4">
                                 {selectedImages.map((image, index) => (
                                   <div key={index} className="relative">
-                                    <img
+                                    <Image
                                       src={URL.createObjectURL(image)}
                                       alt={`Selected ${index}`}
                                       className="h-full w-full object-cover rounded-md"
+                                      width="1"
+                                      height="1"
                                     />
                                     <button
                                       type="button"
