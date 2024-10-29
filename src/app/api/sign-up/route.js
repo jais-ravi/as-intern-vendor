@@ -28,7 +28,7 @@ export async function POST(request) {
         existingUserVerified.verifyCode = verifyCode;
         await existingUserVerified.save();
 
-        // Return _id in the response when user is updated but not verified yet
+
         return Response.json(
           {
             success: true,
@@ -66,7 +66,7 @@ export async function POST(request) {
         );
       }
 
-      // Return the _id of the newly created user
+
       return Response.json(
         {
           success: true,

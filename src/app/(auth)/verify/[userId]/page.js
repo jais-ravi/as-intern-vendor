@@ -16,7 +16,6 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useToast } from "@/hooks/use-toast";
-// import { Input } from "@/components/ui/input";
 import { verifySchema } from "@/schemas/verifyCodeSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -25,7 +24,7 @@ import { useForm } from "react-hook-form";
 
 const VerifyAccount = () => {
   const router = useRouter();
-  const params = useParams(); // Make sure your URL contains dynamic segments like [email] if you're using this
+  const params = useParams();
   const { toast } = useToast();
 
   const form = useForm({
@@ -35,7 +34,7 @@ const VerifyAccount = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(`/api/verify-code`, {
-        userId: params.userId, // Ensure your params contain email from the URL if needed
+        userId: params.userId, 
         code: data.code,
       });
 
@@ -44,7 +43,6 @@ const VerifyAccount = () => {
         description: response.data.message,
       });
 
-      // Redirect to sign-in page after successful verification
       router.replace("/vendor-confirmation");
     } catch (error) {
       if (axios.isAxiosError(error)) {

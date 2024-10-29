@@ -1,5 +1,4 @@
 "use client";
-
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 import { GoVerified } from "react-icons/go";

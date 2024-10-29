@@ -1,70 +1,80 @@
-import dbConnect from "@/lib/dbConnect"; // Adjust the import according to your folder structure
-import productModel from "@/model/product-model"; // Import the product model
+import dbConnect from "@/lib/dbConnect";
+import productModel from "@/model/product-model";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/options";
 
 export async function POST(request) {
-  // Convert the Next.js request into FormData
+
   const formData = await request.formData();
 
-  // Extract fields from FormData
+
   const productName = formData.get("productName");
   const productDes = formData.get("productDes");
-  const productPrice = parseFloat(formData.get("productPrice")); // Ensure numeric types
+  const productPrice = parseFloat(formData.get("productPrice"));
   const sellingPrice = parseFloat(formData.get("sellingPrice"));
   const discount = parseFloat(formData.get("discount"));
-  const size = formData.get("size");
-  const freeDelivery = formData.get("freeDelivery") === 'true'; // Convert to boolean
+  const productBrand = formData.get("productBrand");
+  const freeDelivery = formData.get("freeDelivery") === 'true';
   const deliveryCharge = parseFloat(formData.get("deliveryCharge"));
   const category = formData.get("category");
-  const tags = formData.get("tags") ? formData.get("tags").split(',') : []; // Convert tags to array
-  
-  // Handle product images
-  const images = formData.getAll("productImages"); // Get all files from FormData
+  const tags = formData.get("tags") ? formData.get("tags").split(",") : [];
+  const images = formData.getAll("productImages");
 
-  // Connect to the database
   await dbConnect();
 
   try {
-    // Create an array to hold image data
+
+    const session = await getServerSession({ req: request, ...authOptions });
+    const vendorId = session?.user?._id;
+    if (!vendorId) {
+      return new Response(
+        JSON.stringify({ success: false, message: "Unauthorized" }),
+        { status: 401 }
+      );
+    }
+
+
     const imageBuffers = await Promise.all(images.map(async (file) => {
       return {
-        data: Buffer.from(await file.arrayBuffer()), // Convert file data to Buffer
-        contentType: file.type, // Get the content type
+        data: Buffer.from(await file.arrayBuffer()),
+        contentType: file.type,
       };
     }));
 
-    // Create a new product instance with image data
+
     const newProduct = new productModel({
       productName,
       productDes,
       productPrice,
       sellingPrice,
       discount,
-      size,
+      productBrand,
       freeDelivery,
       deliveryCharge,
       category,
       tags,
-      productImages: imageBuffers, // Store image data
+      productImages: imageBuffers,
+      vendorId, 
     });
 
-    // Save the product to MongoDB
+
     await newProduct.save();
 
-    return Response.json(
-      {
+    return new Response(
+      JSON.stringify({
         success: true,
         message: "Product created successfully",
-      },
+      }),
       { status: 201 }
     );
   } catch (error) {
     console.error("Error creating product", error);
-    return Response.json(
-      {
+    return new Response(
+      JSON.stringify({
         success: false,
         message: "Error creating product",
-        error: error.message // Optional: send error message to the client
-      },
+        error: error.message,
+      }),
       { status: 500 }
     );
   }

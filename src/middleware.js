@@ -11,16 +11,16 @@ export async function middleware(req) {
   // 1. It's a request for NextAuth session or provider fetching
   // 2. The token exists (user is authenticated)
   if (pathname.includes("/api/auth") || token) {
-    return NextResponse.next(); // Continue to the requested page
+    return NextResponse.next(); 
   }
 
-  // Redirect to login page if user is not authenticated and trying to access a protected route
+
   if (pathname === "/Dashboard") {
-    return NextResponse.redirect(new URL("/sign-in", req.url)); // Replace '/sign-in' with your login route
+    return NextResponse.redirect(new URL("/sign-in", req.url)); 
   }
 }
 
-// Define which paths should run through the middleware
+
 export const config = {
-  matcher: ["/Dashboard"], // Only run middleware for this route
+  matcher: ["/Dashboard"], 
 };

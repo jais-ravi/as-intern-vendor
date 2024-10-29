@@ -19,6 +19,8 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Trash } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
+import { redirect } from 'next/navigation'
+
 const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [freeDelivery, setFreeDelivery] = useState(true);
@@ -36,9 +38,10 @@ const AddProduct = () => {
       productPrice: "",
       sellingPrice: "",
       discount: "",
-      size: "",
+      productBrand: "",
       category: "",
       tags: "",
+      outOfStocks: false,
       freeDelivery: true,
       deliveryCharge: "",
     },
@@ -121,9 +124,10 @@ const AddProduct = () => {
       formData.append("productPrice", data.productPrice);
       formData.append("sellingPrice", data.sellingPrice);
       formData.append("discount", data.discount);
-      formData.append("size", data.size);
+      formData.append("productBrand", data.productBrand);
       formData.append("category", data.category);
       formData.append("tags", data.tags);
+      formData.append("outOfStocks", data.outOfStocks);
       formData.append("freeDelivery", freeDelivery);
       formData.append("deliveryCharge", freeDelivery ? 0 : data.deliveryCharge);
 
@@ -147,8 +151,7 @@ const AddProduct = () => {
           title: "Success",
           description: response.data.message,
         });
-
-        router.replace("/products");
+        window.location.reload()
       }
     } catch (error) {
       console.error("Error in creating product", error);
@@ -331,6 +334,7 @@ const AddProduct = () => {
                           <Input
                             type="text"
                             placeholder="Discount"
+                            readOnly
                             {...field}
                           />
                         </FormControl>
@@ -339,13 +343,13 @@ const AddProduct = () => {
                     )}
                   />
                   <FormField
-                    name="size"
+                    name="productBrand"
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Size</FormLabel>
+                        <FormLabel>Product Brand</FormLabel>
                         <FormControl>
-                          <Input placeholder="Size" {...field} />
+                          <Input placeholder="Product Brand" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -377,7 +381,7 @@ const AddProduct = () => {
                       </FormItem>
                     )}
                   />
-
+                  
                   {/* Delivery Charge Section */}
                   <FormField
                     name="freeDelivery"

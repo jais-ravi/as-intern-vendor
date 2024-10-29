@@ -57,7 +57,8 @@ const vendorSchema = mongoose.Schema(
       default: "vendor",
     },
   },
-  { collection: "vendor" }
+  { collection: "vendor",timestamps: true,  }
+  
 );
 
 const vendorModel =

@@ -27,25 +27,23 @@ export default function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
-  // ZOD form validation schema
   const form = useForm({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "", // Changed to email
+      email: "", 
       password: "",
     },
   });
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true); // Disable button while submitting
-
+    setIsSubmitting(true); 
     const result = await signIn("credentials", {
       redirect: false,
-      email: data.email, // Ensure correct usage of email
+      email: data.email,
       password: data.password,
     });
 
-    setIsSubmitting(false); // Enable button again
+    setIsSubmitting(false); 
 
     if (result?.error) {
       if (result.error === "CredentialsSignin") {
@@ -64,7 +62,7 @@ export default function SignInPage() {
     }
     if (result?.url) {
       toast({
-        title: "Login sucessfull",
+        title: "Login successful",
         // description: "Login done",
         // variant: "",
       });

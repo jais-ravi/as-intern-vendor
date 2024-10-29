@@ -7,10 +7,12 @@ const reviewSchema = new mongoose.Schema({
   comment: { type: String, minLength: 5 },
   date: { type: Date, default: Date.now },
 });
+
 const imageSchema = new mongoose.Schema({
   data: Buffer,
   contentType: String, // To store the content type
 });
+
 // Product schema definition
 const productSchema = new mongoose.Schema(
   {
@@ -44,25 +46,22 @@ const productSchema = new mongoose.Schema(
     discount: {
       type: Number,
       min: 0,
-      max: 100, // Discount is in percentage, should be between 0 and 100
+      max: 100, 
     },
-    size: {
-      type: [String], // Array of sizes (e.g., "S", "M", "L", "XL")
-      default: [],
-      // validate: {
-      //   validator: function (value) {
-      //     return value.length > 0; // Ensure at least one size is selected
-      //   },
-      //   message: "At least one size must be selected",
-      // },
+    productBrand: {
+      type: String,
     },
     review: {
-      type: [reviewSchema], // Use review schema for structured reviews
+      type: [reviewSchema], 
       default: [],
     },
     freeDelivery: {
       type: Boolean,
-      default: true, // Default is free delivery
+      default: true, 
+    },
+    outOfStocks: {
+      type: Boolean,
+      default: false, 
     },
     deliveryCharge: {
       type: Number,
@@ -83,14 +82,18 @@ const productSchema = new mongoose.Schema(
       type: [String], // Store tags as an array of strings
       default: [],
     },
+    vendorId: {
+      type: mongoose.Schema.Types.ObjectId, // Store vendor ID as an ObjectId
+      ref: "Vendor", 
+      required: true, // Vendor ID is required for each product
+    },
   },
   {
-    collection: "products", // Specify the collection name in MongoDB
-    timestamps: true, // Automatically add `createdAt` and `updatedAt` timestamps
+    collection: "products", 
+    timestamps: true, 
   }
 );
 
-// Create or retrieve the product model
 const productModel =
   mongoose.models.Product || mongoose.model("Product", productSchema);
 

@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { signUpSchema } from "@/schemas/signupSchema";
 import { Card } from "@/components/ui/card";
-import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Page() {
@@ -97,7 +96,7 @@ export default function Page() {
             <div className="mx-auto grid w-[350px] gap-6">
               <div className="grid gap-2 text-center">
                 <h1 className="text-3xl font-bold">Signup</h1>
-                <p className="text-balance text-muted-foreground">
+                <p className="text-muted-foreground">
                   Enter your details below to create a new account
                 </p>
               </div>
@@ -178,24 +177,6 @@ export default function Page() {
                   </Button>
                 </form>
               </Form>
-              {/* <div>
-                <div className="relative">
-                  <div className="absolute inset-0 flex items-center">
-                    <span className="w-full border-t"></span>
-                  </div>
-                  <div className="relative flex justify-center text-xs uppercase">
-                    <span className="bg-background px-2 text-muted-foreground">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <Button onClick={() => signIn("google")} variant="outline">
-                <div className="flex justify-center items-center gap-4">
-                  <FcGoogle size={25} />
-                  <p>Sign up with Google</p>
-                </div>
-              </Button> */}
               <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}
                 <Link href="/sign-in" className="underline">
