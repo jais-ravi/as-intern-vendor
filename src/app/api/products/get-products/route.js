@@ -2,10 +2,10 @@ import dbConnect from "@/lib/dbConnect";
 import productModel from "@/model/product-model";
 
 export async function GET(req) {
-  dbConnect();
+  await dbConnect();  // Ensure database connection is awaited
+
   try {
-    const { searchParams } = new URL(req.url);
-    const vendorId = searchParams.get("vendorId");
+    const vendorId = req.nextUrl.searchParams.get("vendorId");
 
     if (!vendorId) {
       return new Response(
@@ -13,7 +13,6 @@ export async function GET(req) {
         { status: 400 }
       );
     }
-
 
     const products = await productModel.find({ vendorId });
     return new Response(JSON.stringify(products), { status: 200 });
