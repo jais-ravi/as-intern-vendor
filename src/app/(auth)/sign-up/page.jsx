@@ -41,7 +41,6 @@ export default function Page() {
   });
 
   const onSubmit = async (data) => {
-    console.log("data", data);
     setIsSubmitting(true);
     try {
       const response = await axios.post("/api/sign-up", data);

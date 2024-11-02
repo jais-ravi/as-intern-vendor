@@ -34,7 +34,7 @@ const VerifyAccount = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post(`/api/verify-code`, {
-        userId: params.userId, 
+        userId: params.userId,
         code: data.code,
       });
 

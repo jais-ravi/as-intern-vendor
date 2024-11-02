@@ -8,6 +8,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { productSchema } from "@/schemas/productSchema";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Trash } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
-import { redirect } from 'next/navigation'
+
 
 const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -151,7 +152,9 @@ const AddProduct = () => {
           title: "Success",
           description: response.data.message,
         });
-        window.location.reload()
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500);
       }
     } catch (error) {
       console.error("Error in creating product", error);
@@ -179,7 +182,7 @@ const AddProduct = () => {
   return (
     <div>
       <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[60%] gap-6">
+        <div className="mx-auto grid w-[80%] gap-6">
           <div className="grid gap-2 text-center mb-10">
             <h1 className="text-3xl font-bold">Add the product</h1>
             <p className="text-balance text-muted-foreground">

@@ -2,7 +2,15 @@ import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AddProduct from "./component/AddProduct";
 import Product from "./products/Product";
-Product;
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "../ui/button";
 
 const DashboardContent = () => {
   return (
@@ -19,12 +27,20 @@ const DashboardContent = () => {
             <div className="mt-5">
               <TabsContent value="overview">working...</TabsContent>
               <TabsContent value="products">
-                <h1 className="font-bold text-3xl">Your Products</h1>
+                <div className="flex justify-between">
+                  <h1 className="font-bold text-3xl">Your Products</h1>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button>Add Product</Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-[70%] max-h-[90%] overflow-auto">
+                      <AddProduct />
+                    </DialogContent>
+                  </Dialog>
+                </div>
                 <Product />
               </TabsContent>
-              <TabsContent value="add-product">
-                <AddProduct />
-              </TabsContent>
+              <TabsContent value="add-product"></TabsContent>
             </div>
           </Tabs>
         </div>
