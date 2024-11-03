@@ -5,12 +5,10 @@ import Product from "./products/Product";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
+import OverViewPage from "./component/OverViewPage";
 
 const DashboardContent = () => {
   return (
@@ -18,14 +16,16 @@ const DashboardContent = () => {
       <div className="container ">
         <h1 className="text-5xl font-bold ">Dashboard</h1>
         <div className=" mt-5">
-          <Tabs defaultValue="products" className="w-full">
+          <Tabs defaultValue="overview" className="w-full">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="products">Products</TabsTrigger>
-              <TabsTrigger value="add-product">Add Product</TabsTrigger>
+              <TabsTrigger value="orders">Orders</TabsTrigger>
             </TabsList>
             <div className="mt-5">
-              <TabsContent value="overview">working...</TabsContent>
+              <TabsContent value="overview">
+                <OverViewPage/>
+              </TabsContent>
               <TabsContent value="products">
                 <div className="flex justify-between">
                   <h1 className="font-bold text-3xl">Your Products</h1>
@@ -34,13 +34,15 @@ const DashboardContent = () => {
                       <Button>Add Product</Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-[70%] max-h-[90%] overflow-auto">
+
                       <AddProduct />
+
                     </DialogContent>
                   </Dialog>
                 </div>
                 <Product />
               </TabsContent>
-              <TabsContent value="add-product"></TabsContent>
+              <TabsContent value="orders">working...</TabsContent>
             </div>
           </Tabs>
         </div>

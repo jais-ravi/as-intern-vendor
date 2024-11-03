@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -125,6 +124,19 @@ export default function Page() {
                         <FormLabel>LastName</FormLabel>
                         <FormControl>
                           <Input placeholder="LastName" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    name="contactNumber"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Contact No. (WhatsApp)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="9876543210" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

@@ -6,7 +6,7 @@ import sendVerificationEmail from "@/helper/sendVerificationEmail";
 export async function POST(request) {
   await dbConnect();
   try {
-    const { firstName,lastName, email, password } = await request.json();
+    const { firstName,lastName,contactNumber, email, password } = await request.json();
     const existingUserVerified = await vendorModel.findOne({
       email,
       isVerified: true,
@@ -44,6 +44,7 @@ export async function POST(request) {
       const newUser = new vendorModel({
         firstName,
         lastName,
+        contactNumber,
         email,
         password: hashedPassword,
         verifyCode,
