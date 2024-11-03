@@ -30,20 +30,20 @@ export default function SignInPage() {
   const form = useForm({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: "", 
+      email: "",
       password: "",
     },
   });
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
     const result = await signIn("credentials", {
       redirect: false,
       email: data.email,
       password: data.password,
     });
 
-    setIsSubmitting(false); 
+    setIsSubmitting(false);
 
     if (result?.error) {
       if (result.error === "CredentialsSignin") {
@@ -142,7 +142,7 @@ export default function SignInPage() {
               alt="Image"
               width="1920"
               height="1080"
-              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale rounded-r-lg"
             />
           </div>
         </div>
