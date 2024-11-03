@@ -40,7 +40,7 @@ export default function ProductCard({ product, isLoading }) {
   };
 
   return (
-    <Card className="bg-white rounded-xl shadow-lg w-[18rem]">
+    <Card className="bg-white rounded-xl shadow-lg w-[18rem] dark:bg-[#2A2A3B]">
       <CardHeader className="p-3">
         <Image
           src={imageSrc}
@@ -51,7 +51,7 @@ export default function ProductCard({ product, isLoading }) {
         />
       </CardHeader>
       <CardContent className="pb-1">
-        <CardTitle className="text-base font-semibold text-gray-800 mb-1">
+        <CardTitle className="text-base font-semibold  mb-1">
           {product.productName}
         </CardTitle>
         <div className="text-xs text-gray-500 mb-1.5 line-clamp-2">

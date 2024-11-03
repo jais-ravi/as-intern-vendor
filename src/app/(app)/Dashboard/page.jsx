@@ -9,7 +9,6 @@ const page = () => {
     <div>
     <NavBar/>
     <DashboardContent/>
-
     </div>
   )
 }

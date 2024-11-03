@@ -4,6 +4,7 @@ import React from "react";
 import { GoVerified } from "react-icons/go";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
+import { ThemeBtn } from "./ThemeBtn";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
@@ -27,7 +28,7 @@ const NavBar = () => {
 
   return (
     <div className="w-full h-16  flex justify-between items-center border-b-2 border-slate-400">
-      <div className="container flex justify-between items-center">
+      <div className="flex justify-between items-center container">
         <div>
           <h1>Logo</h1>
         </div>
@@ -38,6 +39,7 @@ const NavBar = () => {
               <h1>{user.isAdmin ? (<GoVerified size="30" />
               ) : (<>X</>)}</h1>
             </div>
+            <ThemeBtn/>
             <Button onClick={handleSignOut}>Logout</Button>
           </div>
         ) : (

@@ -154,6 +154,8 @@ const AddProduct = () => {
           title: "Success",
           description: response.data.message,
         });
+        form.reset();
+        setSelectedImages([]);
         setTimeout(() => {
           window.location.reload()
         }, 1500);

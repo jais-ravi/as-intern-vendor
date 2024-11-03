@@ -32,9 +32,9 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 0 0% 9%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 0 0% 12.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
@@ -71,6 +71,7 @@
   .container {
     max-width: 100rem;
     margin: 0 auto;
+    padding-: 0 .5rem;
   }
   .section{
     margin-top: 2.5rem;
@@ -78,7 +79,7 @@
   @media (max-width: 800px) {
     .container {
       max-width: 100rem; /* Adjust this value for better mobile responsiveness */
-      padding: 0 0.5rem; /* Adding some padding for mobile view */
+      padding: 0 .5rem; /* Adding some padding for mobile view */
     }
   }
 }
