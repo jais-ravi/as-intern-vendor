@@ -19,7 +19,7 @@ export default function ProductCard({ product, isLoading }) {
 
   if (isLoading) {
     return (
-      <Card className="animate-pulse bg-gray-200 p-4 rounded-lg h-[22.1rem]">
+      <Card className="animate-pulse  p-4 rounded-lg h-[22.1rem]">
         <CardContent className="space-y-4">
           <Skeleton className="h-40 rounded" />
           <Skeleton className="h-4 rounded w-1/2" />
@@ -40,21 +40,21 @@ export default function ProductCard({ product, isLoading }) {
   };
 
   return (
-    <Card className="bg-white rounded-xl shadow-lg w-[18rem] dark:bg-[#2A2A3B]">
+    <Card className="bg-white rounded-xl shadow-lg  dark:bg-[#2A2A3B]">
       <CardHeader className="p-3">
         <Image
           src={imageSrc}
           alt={product.productName}
-          className="w-full h-52 object-cover rounded-t-lg"
+          className="w-full h-64 object-cover rounded-t-lg"
           width={10}
           height={10}
         />
       </CardHeader>
       <CardContent className="pb-1">
-        <CardTitle className="text-base font-semibold  mb-1">
+        <CardTitle className="text-base font-semibold mb-1 capitalize-first-letter">
           {product.productName}
         </CardTitle>
-        <div className="text-xs text-gray-500 mb-1.5 line-clamp-2">
+        <div className="text-xs text-gray-500 mb-1.5 line-clamp-2 capitalize-first-letter">
           {product.productDes}
         </div>
         <div className="flex items-center justify-between mb-2">

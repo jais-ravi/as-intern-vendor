@@ -5,9 +5,18 @@ import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+
 
 import {
   Form,
@@ -22,6 +31,9 @@ import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/loginSchema";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
+// import ForgotPassword from "@/components/forgotPassword/ForgotPassword";
+
+
 
 export default function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -82,38 +94,53 @@ export default function SignInPage() {
                 </p>
               </div>
               <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-6"
-                >
-                  <FormField
-                    name="email"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="password"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <div className="mt-6">
+                    <FormField
+                      name="email"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="mt-6">
+                    <FormField
+                      name="password"
+                      control={form.control}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Password</FormLabel>
+                          <FormControl>
+                            <Input type="password" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  {/* <Dialog >
+                    <DialogTrigger asChild>
+                      <div className="flex justify-end text-sm underline cursor-pointer py-3">
+                        Forget password
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent>
+                    <DialogTitle>Forgot Password</DialogTitle>
+                    <DialogDescription>Enter details to forget your password</DialogDescription>
+                      <DialogHeader>
+                        <ForgotPassword/>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog> */}
                   <Button
-                    className="w-full"
+                    className="w-full space-y-0"
                     type="submit"
                     disabled={isSubmitting}
                   >

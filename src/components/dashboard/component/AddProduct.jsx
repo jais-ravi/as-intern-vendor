@@ -158,7 +158,7 @@ const AddProduct = () => {
         setSelectedImages([]);
         setTimeout(() => {
           window.location.reload()
-        }, 1500);
+        }, 1000);
       }
     } catch (error) {
       console.error("Error in creating product", error);
@@ -201,7 +201,7 @@ const AddProduct = () => {
               className="space-y-6"
               encType="multipart/form-data"
             >
-              <div className="grid grid-cols-2 gap-16">
+              <div className="grid lg:grid-cols-2 gap-16 md:grid-cols-1 ">
                 <div>
                   <FormField
                     name="productImages"

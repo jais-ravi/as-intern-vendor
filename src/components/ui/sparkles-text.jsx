@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
@@ -45,7 +45,7 @@ const SparklesText = ({
     const interval = setInterval(updateStars, 100);
 
     return () => clearInterval(interval);
-  }, [colors.first, colors.second]);
+  }, [colors.first, colors.second,sparklesCount]);
 
   return (
     (<div

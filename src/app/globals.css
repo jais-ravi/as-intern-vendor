@@ -71,15 +71,18 @@
   .container {
     max-width: 100rem;
     margin: 0 auto;
-    padding-: 0 .5rem;
+    padding: 0 1rem;
   }
   .section{
     margin-top: 2.5rem;
   }
+  .capitalize-first-letter::first-letter {
+    text-transform: capitalize;
+  }
   @media (max-width: 800px) {
     .container {
       max-width: 100rem; /* Adjust this value for better mobile responsiveness */
-      padding: 0 .5rem; /* Adding some padding for mobile view */
+      padding: 0 1rem; /* Adding some padding for mobile view */
     }
   }
 }
