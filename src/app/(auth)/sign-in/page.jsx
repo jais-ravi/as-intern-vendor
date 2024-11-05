@@ -5,18 +5,9 @@ import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-
 
 import {
   Form,
@@ -31,8 +22,8 @@ import { Loader2 } from "lucide-react";
 import { signInSchema } from "@/schemas/loginSchema";
 import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
-// import ForgotPassword from "@/components/forgotPassword/ForgotPassword";
-
+import DotPattern from "@/components/ui/dot-pattern";
+import { cn } from "@/lib/utils";
 
 
 export default function SignInPage() {
@@ -83,7 +74,12 @@ export default function SignInPage() {
   };
   return (
     <div className="h-[100vh] w-full flex justify-center items-center">
-      <Card className=" w-[80%] drop-shadow-2xl">
+    <DotPattern
+        className={cn(
+          "[mask-image:radial-gradient(70rem_circle_at_center,white,transparent)]"
+        )}
+      />
+      <Card className=" w-[80%] drop-shadow-2xl z-10">
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
           <div className="flex items-center justify-center py-12 px-3">
             <div className="mx-auto grid w-[350px] gap-6">
@@ -125,20 +121,11 @@ export default function SignInPage() {
                       )}
                     />
                   </div>
-                  {/* <Dialog >
-                    <DialogTrigger asChild>
-                      <div className="flex justify-end text-sm underline cursor-pointer py-3">
-                        Forget password
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent>
-                    <DialogTitle>Forgot Password</DialogTitle>
-                    <DialogDescription>Enter details to forget your password</DialogDescription>
-                      <DialogHeader>
-                        <ForgotPassword/>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog> */}
+                  <div className="flex justify-end py-4">
+                    <Link href="/forgot-password" className="text-sm underline">
+                      Forgot Password?
+                    </Link>
+                  </div>
                   <Button
                     className="w-full space-y-0"
                     type="submit"

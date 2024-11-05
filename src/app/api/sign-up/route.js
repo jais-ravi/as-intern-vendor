@@ -40,6 +40,7 @@ export async function POST(request) {
       }
     } else {
       const hashedPassword = await bcrypt.hash(password, 10);
+      const CodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
       const newUser = new vendorModel({
         firstName,
@@ -48,6 +49,7 @@ export async function POST(request) {
         email,
         password: hashedPassword,
         verifyCode,
+        verifyCodeExpiry:CodeExpiry,
       });
       await newUser.save();
 

@@ -22,6 +22,8 @@ import { Loader2 } from "lucide-react";
 import { signUpSchema } from "@/schemas/signupSchema";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
+import DotPattern from "@/components/ui/dot-pattern";
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,7 +81,12 @@ export default function Page() {
 
   return (
     <div className="h-[100vh] w-full flex justify-center items-center">
-      <Card className=" w-[80%] drop-shadow-2xl">
+    <DotPattern
+        className={cn(
+          "[mask-image:radial-gradient(70rem_circle_at_center,white,transparent)]"
+        )}
+      />
+      <Card className=" w-[80%] drop-shadow-2xl z-10">
         <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px] ">
           <div className="hidden bg-muted lg:block rounded-l-xl ">
             <Image

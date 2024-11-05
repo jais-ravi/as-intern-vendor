@@ -2,7 +2,6 @@ import dbConnect from "@/lib/dbConnect";
 import productModel from "@/model/product-model";
 export async function GET(req) {
   await dbConnect(); 
-
   try {
     const vendorId = req.nextUrl.searchParams.get("vendorId");
 

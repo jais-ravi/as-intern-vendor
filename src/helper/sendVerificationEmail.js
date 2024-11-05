@@ -13,7 +13,6 @@ export default async function sendVerificationEmail(email, firstName, verifyCode
     text: "Verification mail", 
     html: emailHTML,
   };
-
   try {
     await transporter.sendMail(mailOptions);
     return { success: true, message: "Verification email sent successfully." };

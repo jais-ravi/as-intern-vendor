@@ -1,13 +1,13 @@
 import dbConnect from "@/lib/dbConnect";
 import vendorModel from "@/model/vendor-model";
 
+
 export async function POST(request) {
   await dbConnect();
 
   try {
-    const { userId, code } = await request.json();
-
-    const user = await vendorModel.findById(userId);
+    const { email, otp } = await request.json();
+    const user = await vendorModel.findOne({email});
     if (!user) {
       return new Response(
         JSON.stringify({ success: false, message: "User not found" }),
@@ -28,7 +28,7 @@ export async function POST(request) {
     }
 
     // Check if the provided code matches the user's stored code
-    const isCodeValid = user.verifyCode === code;
+    const isCodeValid = user.verifyCode === otp;
     if (!isCodeValid) {
       return new Response(
         JSON.stringify({
@@ -40,7 +40,6 @@ export async function POST(request) {
     }
 
     // Update the user as verified and clear the verification code and expiry
-    user.isVerified = true;
     user.verifyCode = null; // set to null for better type consistency
     user.verifyCodeExpiry = null;
     await user.save();
