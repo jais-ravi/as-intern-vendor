@@ -80,7 +80,7 @@ export default function Page() {
   };
 
   return (
-    <div className="h-[100vh] w-full flex justify-center items-center">
+    <div className="w-full min-h-screen flex justify-center items-center">
     <DotPattern
         className={cn(
           "[mask-image:radial-gradient(70rem_circle_at_center,white,transparent)]"

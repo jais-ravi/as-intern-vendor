@@ -73,7 +73,7 @@ export default function SignInPage() {
     }
   };
   return (
-    <div className="h-[100vh] w-full flex justify-center items-center">
+    <div className=" min-h-screen w-full flex justify-center items-center">
     <DotPattern
         className={cn(
           "[mask-image:radial-gradient(70rem_circle_at_center,white,transparent)]"

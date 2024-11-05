@@ -176,7 +176,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="w-full h-[100vh] flex justify-center items-center container">
+    <div className="w-full min-h-screen flex justify-center items-center container">
       <DotPattern
         className={cn(
           "[mask-image:radial-gradient(70rem_circle_at_center,white,transparent)]"
