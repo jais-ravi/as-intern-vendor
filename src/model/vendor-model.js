@@ -51,7 +51,6 @@ const vendorSchema = mongoose.Schema(
     },
     verifyCodeExpiry: {
       type: Date, 
-      // default: () => new Date(Date.now() + 10 * 60 * 1000), 
     },
     address: {
       type: String,

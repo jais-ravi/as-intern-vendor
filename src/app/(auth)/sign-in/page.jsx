@@ -1,6 +1,13 @@
 "use client";
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,7 +31,6 @@ import { signIn } from "next-auth/react";
 import { useToast } from "@/hooks/use-toast";
 import DotPattern from "@/components/ui/dot-pattern";
 import { cn } from "@/lib/utils";
-
 
 export default function SignInPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -73,94 +79,101 @@ export default function SignInPage() {
     }
   };
   return (
-    <div className=" min-h-screen w-full flex justify-center items-center">
-    <DotPattern
+    <div className=" min-h-screen w-full">
+      <DotPattern
         className={cn(
           "[mask-image:radial-gradient(70rem_circle_at_center,white,transparent)]"
         )}
       />
-      <Card className=" w-[80%] drop-shadow-2xl z-10">
-        <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-          <div className="flex items-center justify-center py-12 px-3">
-            <div className="mx-auto grid w-[350px] gap-6">
-              <div className="grid gap-2 text-center">
-                <h1 className="text-3xl font-bold">Login</h1>
-                <p className="text-balance text-muted-foreground">
-                  Enter your email below to login to your account
-                </p>
-              </div>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                  <div className="mt-6">
-                    <FormField
-                      name="email"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+      <div className=" container min-h-screen flex justify-center items-center">
+        <Card className=" w-full sm:w-[80%] drop-shadow-2xl z-10">
+          <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+            <div className="flex items-center justify-center ">
+              <div className="mx-auto grid  gap-6">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-3xl">Login</CardTitle>
+                  <CardDescription>
+                    Enter your email below to login to your account
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                      <FormField
+                        name="email"
+                        control={form.control}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>E-mail</FormLabel>
+                            <FormControl>
+                              <Input placeholder="E-mail" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <div className="mt-6">
+                        <FormField
+                          name="password"
+                          control={form.control}
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Password</FormLabel>
+                              <FormControl>
+                                <Input placeholder="Password" type="password" {...field} />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex justify-end py-4">
+                        <Link
+                          href="/forgot-password"
+                          className="text-sm underline"
+                        >
+                          Forgot Password?
+                        </Link>
+                      </div>
+                      <Button
+                        className="w-full space-y-0"
+                        type="submit"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Please wait...
+                          </>
+                        ) : (
+                          "Sign In"
+                        )}
+                      </Button>
+                    </form>
+                  </Form>
+                </CardContent>
+                <CardFooter className="text-sm flex justify-center">
+                <div>
+                  Don&apos;t have an account?{" "}
+                  <Link href="/sign-up" className="underline">
+                    Sign up
+                  </Link>
                   </div>
-                  <div className="mt-6">
-                    <FormField
-                      name="password"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex justify-end py-4">
-                    <Link href="/forgot-password" className="text-sm underline">
-                      Forgot Password?
-                    </Link>
-                  </div>
-                  <Button
-                    className="w-full space-y-0"
-                    type="submit"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Please wait...
-                      </>
-                    ) : (
-                      "Sign In"
-                    )}
-                  </Button>
-                </form>
-              </Form>
-              <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <Link href="/sign-up" className="underline">
-                  Sign up
-                </Link>
-              </div>
+                </CardFooter>
+              </div>     
+            </div>
+            <div className="hidden bg-muted lg:block">
+              <Image
+                src="/next.svg"
+                alt="Image"
+                width="1920"
+                height="1080"
+                className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale rounded-r-lg"
+              />
             </div>
           </div>
-          <div className="hidden bg-muted lg:block">
-            <Image
-              src="/next.svg"
-              alt="Image"
-              width="1920"
-              height="1080"
-              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale rounded-r-lg"
-            />
-          </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 }

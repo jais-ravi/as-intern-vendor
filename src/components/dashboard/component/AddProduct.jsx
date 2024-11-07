@@ -8,6 +8,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { productSchema } from "@/schemas/productSchema";
 import { useToast } from "@/hooks/use-toast";
@@ -20,9 +29,7 @@ import { Switch } from "@/components/ui/switch";
 import { Loader2, Trash } from "lucide-react";
 import axios from "axios";
 import Image from "next/image";
-import { DialogTitle } from "@/components/ui/dialog";
-
-
+import { CardContent } from "@/components/ui/card";
 
 const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -157,7 +164,7 @@ const AddProduct = () => {
         form.reset();
         setSelectedImages([]);
         setTimeout(() => {
-          window.location.reload()
+          window.location.reload();
         }, 1000);
       }
     } catch (error) {
@@ -185,272 +192,268 @@ const AddProduct = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[80%] gap-6">
-          <div className="grid gap-2 text-center mb-10">
-            <h1 className="text-3xl font-bold">Add Product</h1>
-            <DialogTitle>
-            <p className="text-balance font-normal text-muted-foreground">
-              Enter your details below to add a new product
-            </p>
-            </DialogTitle>
-          </div>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-6"
-              encType="multipart/form-data"
-            >
-              <div className="grid lg:grid-cols-2 gap-16 md:grid-cols-1 ">
-                <div>
-                  <FormField
-                    name="productImages"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Images</FormLabel>
-                        <FormControl>
-                          <div>
-                            <label
-                              htmlFor="file-upload"
-                              className={`flex justify-center items-center w-full py-20 border-2 border-dashed rounded-lg transition-colors hover:border-black bg-blue-50 duration-300 ${
-                                isDragging
-                                  ? "border-blue-500 bg-blue-50"
-                                  : "border-gray-300 bg-gray-100"
-                              } cursor-pointer`} // Make the entire area clickable
-                              onDrop={handleDrop}
-                              onDragOver={handleDragOver}
-                              onDragLeave={handleDragLeave}
-                            >
-                              <div className="text-center w-full h-full flex flex-col items-center">
-                                <p className="text-sm text-gray-500">
-                                  {isDragging
-                                    ? "Drop your images here..."
-                                    : "Click or drag images here to upload"}
-                                </p>
-                                <p className="text-xs text-gray-400 mt-2">
-                                  Max file size: 5MB
-                                </p>
-                                <input
-                                  id="file-upload"
-                                  type="file"
-                                  multiple
-                                  className="hidden"
-                                  accept="image/*"
-                                  onChange={handleFileChange}
-                                />
-                              </div>
-                            </label>
+      <DialogHeader >
+        <DialogTitle className="text-center text-3xl">Add Product</DialogTitle>
+        <DialogDescription className="text-center text-base">
+          Enter your details below to add a new product
+        </DialogDescription>
+      </DialogHeader>
+      <CardContent className="pt-6">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6"
+            encType="multipart/form-data"
+          >
+            <div className="grid lg:grid-cols-2 gap-16 md:grid-cols-1 ">
+              <div>
+                <FormField
+                  name="productImages"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Images</FormLabel>
+                      <FormControl>
+                        <div>
+                          <label
+                            htmlFor="file-upload"
+                            className={`flex justify-center items-center w-full py-20 border-2 border-dashed rounded-lg transition-colors hover:border-black bg-blue-50 duration-300 ${
+                              isDragging
+                                ? "border-blue-500 bg-blue-50"
+                                : "border-gray-300 bg-gray-100"
+                            } cursor-pointer`} // Make the entire area clickable
+                            onDrop={handleDrop}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                          >
+                            <div className="text-center w-full h-full flex flex-col items-center">
+                              <p className="text-sm text-gray-500">
+                                {isDragging
+                                  ? "Drop your images here..."
+                                  : "Click or drag images here to upload"}
+                              </p>
+                              <p className="text-xs text-gray-400 mt-2">
+                                Max file size: 5MB
+                              </p>
+                              <input
+                                id="file-upload"
+                                type="file"
+                                multiple
+                                className="hidden"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                              />
+                            </div>
+                          </label>
 
-                            {/* Display selected images */}
-                            {selectedImages.length > 0 && (
-                              <div className="mt-4 grid grid-cols-2 gap-4">
-                                {selectedImages.map((image, index) => (
-                                  <div key={index} className="relative">
-                                    <Image
-                                      src={URL.createObjectURL(image)}
-                                      alt={`Selected ${index}`}
-                                      className="h-full w-full object-cover rounded-md"
-                                      width="1"
-                                      height="1"
-                                    />
-                                    <button
-                                      type="button"
-                                      onClick={() => handleDeleteImage(index)}
-                                      className="absolute top-0 right-0 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
-                                    >
-                                      <Trash className="w-4 h-4" />
-                                    </button>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex flex-col gap-5">
-                  <FormField
-                    name="productName"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product Name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="productDes"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Description</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product Description" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="productPrice"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Price</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="Product Price"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="sellingPrice"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Selling Price</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="Selling Price"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="discount"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Discount (%)</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Discount"
-                            readOnly
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="productBrand"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Brand</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product Brand" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="category"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Category" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    name="tags"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tags</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Tags" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  {/* Delivery Charge Section */}
-                  <FormField
-                    name="freeDelivery"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Free Delivery</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center space-x-2">
-                            <Switch
-                              checked={freeDelivery}
-                              onCheckedChange={(checked) =>
-                                setFreeDelivery(checked)
-                              }
-                            />
-                            <span>{freeDelivery ? "Yes" : "No"}</span>
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* Show delivery charge only when free delivery is false */}
-                  {!freeDelivery && (
-                    <FormField
-                      name="deliveryCharge"
-                      control={form.control}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Delivery Charge</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder="Delivery Charge"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                          {/* Display selected images */}
+                          {selectedImages.length > 0 && (
+                            <div className="mt-4 grid grid-cols-2 gap-4">
+                              {selectedImages.map((image, index) => (
+                                <div key={index} className="relative">
+                                  <Image
+                                    src={URL.createObjectURL(image)}
+                                    alt={`Selected ${index}`}
+                                    className="h-full w-full object-cover rounded-md"
+                                    width="1"
+                                    height="1"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteImage(index)}
+                                    className="absolute top-0 right-0 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
+                                  >
+                                    <Trash className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
                   )}
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full"
-                  >
-                    {isSubmitting && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Add Product
-                  </Button>
-                </div>
+                />
               </div>
-            </form>
-          </Form>
-        </div>
-      </div>
+              <div className="flex flex-col gap-5">
+                <FormField
+                  name="productName"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Product Name" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="productDes"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Description</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Product Description" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="productPrice"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Price</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Product Price"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="sellingPrice"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Selling Price</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="Selling Price"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="discount"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Discount (%)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Discount"
+                          readOnly
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="productBrand"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Brand</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Product Brand" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="category"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Category" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="tags"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Tags" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Delivery Charge Section */}
+                <FormField
+                  name="freeDelivery"
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Free Delivery</FormLabel>
+                      <FormControl>
+                        <div className="flex items-center space-x-2">
+                          <Switch
+                            checked={freeDelivery}
+                            onCheckedChange={(checked) =>
+                              setFreeDelivery(checked)
+                            }
+                          />
+                          <span>{freeDelivery ? "Yes" : "No"}</span>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Show delivery charge only when free delivery is false */}
+                {!freeDelivery && (
+                  <FormField
+                    name="deliveryCharge"
+                    control={form.control}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Delivery Charge</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Delivery Charge"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full"
+                >
+                  {isSubmitting && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Add Product
+                </Button>
+              </div>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
     </div>
   );
 };
