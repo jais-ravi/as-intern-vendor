@@ -46,7 +46,7 @@ const vendorSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
-    shopName: {
+    shop: {
       type: String,
     },
     verifyCodeExpiry: {

@@ -14,7 +14,6 @@ export default function Product() {
   useEffect(() => {
     const fetchVendorProducts = async () => {
       if (!session?.user?._id) return;
-
       try {
         setIsLoading(true);
         setError(null);

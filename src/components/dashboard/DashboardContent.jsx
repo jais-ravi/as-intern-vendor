@@ -11,7 +11,6 @@ const DashboardContent = () => {
   return (
     <div className="w-full py-5 ">
       <div className="container ">
-        {/* <h1 className="text-5xl font-bold ">Dashboard</h1> */}
         <SparklesText className="text-5xl font-bold" text="Dashboard" />
         <div className=" mt-5">
           <Tabs defaultValue="overview" className="w-full">

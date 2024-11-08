@@ -86,8 +86,8 @@ export const productSchema = z
     deliveryCharge: deliveryChargeValidation,
     productImages: z
       .array(z.instanceof(File))
-      .refine((files) => files.length <= 5, {
-        message: "You can upload a maximum of 5 images.",
+      .refine((files) => files.length >= 1 && files.length <= 5, {
+        message: "You can upload a minimum of 1 and a maximum of 5 images.",
       }),
     category: categoryValidation,
     tags: tagsValidation,

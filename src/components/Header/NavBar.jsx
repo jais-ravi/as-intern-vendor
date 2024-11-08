@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AlignJustify, LogOut, Store, TriangleAlert, User } from "lucide-react";
 import BlurIn from "../ui/blur-in";
+import Link from "next/link";
 
 const NavBar = () => {
   const { data: session, status } = useSession();
@@ -42,7 +43,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="w-full h-16  flex justify-between items-center border-b-2 border-slate-400">
+    <div className="w-full h-16  flex justify-between items-center border-b-2 border-slate-400 ">
       <div className="flex justify-between items-center container">
         <div>
           <h1>Logo</h1>
@@ -70,14 +71,18 @@ const NavBar = () => {
               <DropdownMenuContent className="w-48">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <User />
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Store />
-                  Shop
-                </DropdownMenuItem>
+                <Link href={`/Dashboard/profile/${user._id}`}>
+                  <DropdownMenuItem>
+                    <User />
+                    Profile
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`/Dashboard/shop/${user._id}`}>
+                  <DropdownMenuItem>
+                    <Store />
+                    Shop
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                   <TriangleAlert />
                   Report a problem

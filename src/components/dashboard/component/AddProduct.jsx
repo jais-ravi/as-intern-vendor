@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 import { productSchema } from "@/schemas/productSchema";
 import { useToast } from "@/hooks/use-toast";
@@ -192,7 +193,7 @@ const AddProduct = () => {
 
   return (
     <div>
-      <DialogHeader >
+      <DialogHeader>
         <DialogTitle className="text-center text-3xl">Add Product</DialogTitle>
         <DialogDescription className="text-center text-base">
           Enter your details below to add a new product
@@ -297,7 +298,11 @@ const AddProduct = () => {
                     <FormItem>
                       <FormLabel>Product Description</FormLabel>
                       <FormControl>
-                        <Input placeholder="Product Description" {...field} />
+                        <Textarea
+                          placeholder="Type your product description here."
+                          {...field}
+                          className="resize-none h-52"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
