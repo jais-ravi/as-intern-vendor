@@ -9,13 +9,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  Dialog,
-  DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -52,7 +48,6 @@ const AddProduct = () => {
       productBrand: "",
       category: "",
       tags: "",
-      outOfStocks: false,
       freeDelivery: true,
       deliveryCharge: "",
     },
@@ -138,7 +133,6 @@ const AddProduct = () => {
       formData.append("productBrand", data.productBrand);
       formData.append("category", data.category);
       formData.append("tags", data.tags);
-      formData.append("outOfStocks", data.outOfStocks);
       formData.append("freeDelivery", freeDelivery);
       formData.append("deliveryCharge", freeDelivery ? 0 : data.deliveryCharge);
 
@@ -259,13 +253,14 @@ const AddProduct = () => {
                                     width="1"
                                     height="1"
                                   />
-                                  <button
-                                    type="button"
+                                  <Button
                                     onClick={() => handleDeleteImage(index)}
-                                    className="absolute top-0 right-0 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
+                                    className="absolute top-0 right-0 dark:bg-red-600"
+                                    variant="destructive"
+                                    size="icon"
                                   >
                                     <Trash className="w-4 h-4" />
-                                  </button>
+                                  </Button>
                                 </div>
                               ))}
                             </div>
@@ -347,7 +342,7 @@ const AddProduct = () => {
                   control={form.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Discount (%)</FormLabel>
+                      <FormLabel>Discount % (auto-calculate)</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
