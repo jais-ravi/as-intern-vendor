@@ -3,10 +3,12 @@ import bcrypt from "bcryptjs";
 import vendorModel from "@/model/vendor-model";
 import sendVerificationEmail from "@/helper/sendVerificationEmail";
 
+
 export async function POST(request) {
   await dbConnect();
   try {
-    const { firstName,lastName,contactNumber, email, password } = await request.json();
+    const { firstName, lastName, contactNumber, email, password } =
+      await request.json();
     const existingUserVerified = await vendorModel.findOne({
       email,
       isVerified: true,
@@ -28,7 +30,6 @@ export async function POST(request) {
         existingUserVerified.verifyCode = verifyCode;
         await existingUserVerified.save();
 
-
         return Response.json(
           {
             success: true,
@@ -49,7 +50,7 @@ export async function POST(request) {
         email,
         password: hashedPassword,
         verifyCode,
-        verifyCodeExpiry:CodeExpiry,
+        verifyCodeExpiry: CodeExpiry,
       });
       await newUser.save();
 
@@ -68,8 +69,6 @@ export async function POST(request) {
           { status: 500 }
         );
       }
-
-
       return Response.json(
         {
           success: true,

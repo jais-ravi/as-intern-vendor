@@ -1,3 +1,4 @@
+import registerVendorMailSend from "@/helper/registerVendorMailSend";
 import dbConnect from "@/lib/dbConnect";
 import vendorModel from "@/model/vendor-model";
 
@@ -7,52 +8,37 @@ export async function POST(request) {
   try {
     const { userId, code } = await request.json();
 
+    // Utility function to streamline responses
+    const jsonResponse = (status, success, message) =>
+      new Response(JSON.stringify({ success, message }), {
+        status,
+        headers: { "Content-Type": "application/json" },
+      });
+
+    // Check if user exists
     const user = await vendorModel.findById(userId);
-    if (!user) {
-      return new Response(
-        JSON.stringify({ success: false, message: "User not found" }),
-        { status: 404, headers: { "Content-Type": "application/json" } }
-      );
+    if (!user) return jsonResponse(404, false, "User not found");
+
+    // Verify code expiration
+    if (new Date(user.verifyCodeExpiry) <= new Date()) {
+      return jsonResponse(400, false, "Verification code has expired.");
     }
 
-    // Check if the verification code has expired
-    const isCodeNotExpired = new Date(user.verifyCodeExpiry) > new Date();
-    if (!isCodeNotExpired) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: "Verification code has expired.",
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
+    // Verify code accuracy
+    if (user.verifyCode !== code) {
+      return jsonResponse(400, false, "Incorrect verification code.");
     }
 
-    // Check if the provided code matches the user's stored code
-    const isCodeValid = user.verifyCode === code;
-    if (!isCodeValid) {
-      return new Response(
-        JSON.stringify({
-          success: false,
-          message: "Incorrect verification code.",
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
-      );
-    }
-
-    // Update the user as verified and clear the verification code and expiry
+    // Update user verification status
     user.isVerified = true;
-    user.verifyCode = null; // set to null for better type consistency
+    user.verifyCode = null;
     user.verifyCodeExpiry = null;
     await user.save();
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: "Account verified successfully.",
-      }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    // Send notification email
+    await registerVendorMailSend(user.email, user.firstName);
 
+    return jsonResponse(200, true, "Account verified successfully.");
   } catch (error) {
     console.error("Error verifying user:", error);
     return new Response(

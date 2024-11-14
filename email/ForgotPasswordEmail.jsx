@@ -11,11 +11,11 @@ import {
   Text,
 } from "@react-email/components";
 
-export default function VerificationEmail({ firstName, otp }) {
+export default function ForgotPasswordEmail({ firstName, otp }) {
   return (
     <Html lang="en" dir="ltr">
       <Head>
-        <title>Verification Code</title>
+        <title>Password Reset Code</title>
         <Font
           fontFamily="Roboto"
           fallbackFontFamily="Verdana"
@@ -27,7 +27,7 @@ export default function VerificationEmail({ firstName, otp }) {
           fontStyle="normal"
         />
       </Head>
-      <Preview>Here&apos;s your verification code: {otp}</Preview>
+      <Preview>Your password reset code: {otp}</Preview>
       <Section style={styles.section}>
         <Row>
           <Heading as="h2" style={styles.heading}>
@@ -36,25 +36,24 @@ export default function VerificationEmail({ firstName, otp }) {
         </Row>
         <Row>
           <Text style={styles.message}>
-            Thank you for registering. Please use the following verification
-            code to complete your registration:
+            We received a request to reset your password. Please use the following code to reset your password:
           </Text>
         </Row>
         <Row style={styles.otpContainer}>
           <Text style={styles.otp}>{otp}</Text>
         </Row>
         <Row>
-          <Text style={styles.footer}>
-            If you did not request this code, please ignore this email.
+          <Text style={styles.note}>
+            This code is valid for the next 10 minutes. If you didn’t request a password reset, you can safely ignore this email.
           </Text>
         </Row>
-        {/* Uncomment this section if you want to add a verification button */}
+        {/* Uncomment this section if you want to add a reset link button */}
         {/* <Row>
           <Button
-            href={`http://localhost:3000/verify/${username}`}
+            href={`http://localhost:3000/reset-password/${otp}`}
             style={styles.button}
           >
-            Verify here
+            Reset Password
           </Button>
         </Row> */}
       </Section>
@@ -96,7 +95,7 @@ const styles = {
     padding: '10px 20px',
     borderRadius: '4px',
   },
-  footer: {
+  note: {
     fontSize: '14px',
     color: '#777',
     textAlign: 'center',

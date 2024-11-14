@@ -1,6 +1,7 @@
-import sendVerificationEmail from "@/helper/sendVerificationEmail";
+import ForgotPasswordEmailSend from "@/helper/ForgotPasswordEmail";
 import dbConnect from "@/lib/dbConnect";
 import vendorModel from "@/model/vendor-model";
+
 
 export async function POST(request) {
   await dbConnect();
@@ -24,7 +25,7 @@ export async function POST(request) {
     user.verifyCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
     await user.save();
 
-    const emailResponse = await sendVerificationEmail(
+    const emailResponse = await ForgotPasswordEmailSend(
       email,
       user.firstName,
       verifyCode

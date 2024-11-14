@@ -1,15 +1,9 @@
 "use client";
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
-import { GoVerified } from "react-icons/go";
 import { Button } from "../ui/button";
 import { toast } from "@/hooks/use-toast";
 import { ThemeBtn } from "./ThemeBtn";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -53,8 +47,8 @@ const NavBar = () => {
             <BlurIn
               word={
                 <div className="hidden md:block">
-                  <h1 className="flex gap-2">
-                    <div>Hello,</div>
+                  <h1 className="flex gap-2 capitalize">
+                    <div>Hey 👋 ,</div>
                     {user.firstName}
                   </h1>
                 </div>

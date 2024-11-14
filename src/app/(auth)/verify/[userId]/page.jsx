@@ -29,8 +29,12 @@ import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import DotPattern from "@/components/ui/dot-pattern";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
+
 
 const VerifyAccount = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const params = useParams();
   const { toast } = useToast();
@@ -40,6 +44,7 @@ const VerifyAccount = () => {
   });
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       const response = await axios.post(`/api/verify-code`, {
         userId: params.userId,
@@ -50,7 +55,7 @@ const VerifyAccount = () => {
         title: "Success",
         description: response.data.message,
       });
-
+      setIsSubmitting(false);
       router.replace("/vendor-confirmation");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -69,6 +74,7 @@ const VerifyAccount = () => {
           variant: "destructive",
         });
       }
+      setIsSubmitting(false);
     }
   };
 
@@ -127,8 +133,19 @@ const VerifyAccount = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="mt-5">
-                  Verify
+                <Button
+                  className="w-full mt-8"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Please wait...
+                    </>
+                  ) : (
+                    "Verify"
+                  )}
                 </Button>
               </form>
             </Form>

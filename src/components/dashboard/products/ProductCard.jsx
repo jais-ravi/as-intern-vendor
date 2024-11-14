@@ -40,7 +40,7 @@ export default function ProductCard({ product, isLoading }) {
   };
 
   return (
-    <Card className="bg-white rounded-xl shadow-lg  dark:bg-[#2A2A3B]">
+    <Card className="bg-white rounded-xl shadow-lg max-w-72 dark:bg-[#2A2A3B]">
       <CardHeader className="p-3">
         <Image
           src={imageSrc}
