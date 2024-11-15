@@ -24,13 +24,13 @@ const VendorSuccess = () => {
         <CardHeader>
           <CardTitle  className="text-2xl">Congratulations 🎉</CardTitle>
           <CardDescription>
-            You have successfully registered as a vendor. We're excited to have
+            You have successfully registered as a vendor. We&apos;re excited to have
             you on board!
           </CardDescription>
         </CardHeader>
         <CardContent>
           Please note that your account is pending approval from our admin team.
-          Once approved, you’ll be able to access all vendor features and start
+          Once approved, you&apos;ll be able to access all vendor features and start
           listing your products.
         </CardContent>
         <div className="flex justify-center">
