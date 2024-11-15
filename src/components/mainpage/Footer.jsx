@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-[80%]">
         {/* Logo Section */}
         <div className="flex flex-col items-center sm:items-start space-y-3">
-          <Image src="/logo.png" alt="Logo" width={50} height={50} />
+          <Image src="/next.svg" alt="Logo" width={50} height={50} />
           <span className="text-2xl font-bold">LOGO</span>
         </div>
 

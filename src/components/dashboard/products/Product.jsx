@@ -46,16 +46,16 @@ export default function Product() {
         <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {isLoading
             ? Array.from({ length: 10 }).map((_, index) => ( 
-                <Card key={index} className="p-2">
+                <div key={index} className="p-2">
                   <ProductCard isLoading={true} />
-                </Card>
+                </div>
               ))
             : error
             ? <div className="col-span-full text-center text-red-500">Something went wrong...</div> 
             : products.length === 0
             ? <div className="col-span-full text-center text-gray-500">No product is found, please create a new product.</div> // Message when no products are available
             : products.map((product) => (
-                <div key={product._id} className="">
+                <div key={product._id} className=" flex justify-center items-center">
                   <ProductCard product={product} isLoading={false} />
                 </div>
               ))}
