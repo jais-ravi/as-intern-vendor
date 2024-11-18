@@ -36,7 +36,7 @@ export default function ProductCard({ product, isLoading }) {
     : "/path/to/placeholder-image.png"; // Provide a fallback image
 
   const handleEdit = () => {
-    router.push(`/products/edit/${product._id}`);
+    router.push(`/products/${product._id}`);
   };
 
   return (
