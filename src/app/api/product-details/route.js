@@ -8,7 +8,6 @@ export async function GET(request) {
     // Extract productId from query string
     const url = new URL(request.url);
     const productId = url.searchParams.get("productId");
-
     if (!productId) {
       return new Response(
         JSON.stringify({ success: false, message: "Product ID is required" }),

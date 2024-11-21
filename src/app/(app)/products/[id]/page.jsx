@@ -111,7 +111,6 @@ const Page = () => {
 
   const images = product.productImages || [];
   const fallbackImage = "/path/to/placeholder-image.png";
-
   return (
     <div>
       <NavBar />
@@ -124,8 +123,8 @@ const Page = () => {
             <DialogTrigger asChild>
               <Button>Edit</Button>
             </DialogTrigger>
-            <DialogContent>
-              <ProductEdit/>
+            <DialogContent className="rounded-xl overflow-auto max-w-[95%] 2xl:max-w-[70%] md:max-w-[80%] sm:max-w-[70%]   max-h-[90%] min-[2320px]:max-w-[50%] min-[3000px]:max-w-[40%]  ">
+              <ProductEdit product={product} />
             </DialogContent>
           </Dialog>
         </div>
