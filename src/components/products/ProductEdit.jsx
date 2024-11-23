@@ -16,7 +16,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { updateProductSchema } from "@/schemas/updateProductSchema";
 import { useToast } from "@/hooks/use-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,8 @@ import { Loader2 } from "lucide-react";
 import axios from "axios";
 import { CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import UpdateImage from "./UpdateImage";
+
 
 const AddProduct = ({ product }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -137,16 +139,15 @@ const AddProduct = ({ product }) => {
   return (
     <div>
       <DialogHeader>
-        <DialogTitle className="text-center text-3xl">Add Product</DialogTitle>
+        <DialogTitle className="text-center text-3xl">Update Product details</DialogTitle>
         <DialogDescription className="text-center text-base">
-          Enter your details below to add a new product
+          Enter your details below to update product details.
         </DialogDescription>
       </DialogHeader>
       <CardContent className="pt-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-16 md:grid-cols-1">
-              <div></div>
               <div className="flex flex-col gap-5">
                 <FormField
                   name="productName"

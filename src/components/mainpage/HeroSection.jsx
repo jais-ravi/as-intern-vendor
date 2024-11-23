@@ -52,7 +52,6 @@ const HeroSection = () => {
               <Image
                 src="/rb_2149483144.png"
                 alt="image"
-                layout="responsive"
                 width={1500} 
                 height={1000}
                 className="object-cover"

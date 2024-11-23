@@ -58,7 +58,8 @@ export const authOptions = {
         token.isVerified = user.isVerified;
         token.isAdmin = user.isAdmin;
         token.email = user.email;
-        token.firstName = user.firstName || profile?.name;
+        token.firstName = user.firstName ;
+        token.lastName = user.lastName ;
       }
       return token;
     },
@@ -69,6 +70,7 @@ export const authOptions = {
         session.user.isAdmin = token.isAdmin;
         session.user.email = token.email;
         session.user.firstName = token.firstName || "";
+        session.user.lastName = token.lastName || "";
       }
       return session;
     },

@@ -19,7 +19,7 @@ export default function ProductCard({ product, isLoading }) {
 
   if (isLoading) {
     return (
-      <Card className="animate-pulse  p-4 rounded-lg h-[22.1rem]">
+      <Card className="animate-pulse  p-4 rounded-lg max-w-72 min-w-64">
         <CardContent className="space-y-4">
           <Skeleton className="h-40 rounded" />
           <Skeleton className="h-4 rounded w-1/2" />
@@ -36,11 +36,11 @@ export default function ProductCard({ product, isLoading }) {
     : "/path/to/placeholder-image.png"; // Provide a fallback image
 
   const handleEdit = () => {
-    router.push(`/products/${product._id}`);
+    router.push(`/dashboard/products/${product._id}`);
   };
 
   return (
-    <Card className="bg-white rounded-xl shadow-lg max-w-72 dark:bg-[#2A2A3B]">
+    <Card className="bg-white rounded-xl shadow-lg max-w-72 min-w-64 dark:bg-[#2A2A3B]">
       <CardHeader className="p-3">
         <Image
           src={imageSrc}

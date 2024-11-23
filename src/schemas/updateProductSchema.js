@@ -73,7 +73,6 @@ export const tagsValidation = z.preprocess(
   z.array(z.string()).optional().default([]) 
 );
 
-
 export const updateProductSchema = z
   .object({
     productName: productNameValidation,

@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useRef } from "react";
-import MainNav from "@/components/Header/MainNav";
+import MainNav from "@/components/headerFooter/MainNav";
 import WorkSection from "@/components/mainpage/WorkSection";
 import FaqSection from "@/components/mainpage/FaqSection";
 import Footer from "@/components/mainpage/Footer";

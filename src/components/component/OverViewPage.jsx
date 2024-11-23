@@ -7,8 +7,6 @@ import {
 } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 import { IndianRupee } from "lucide-react";
-import { OverViewChart } from "./OverViewChart";
-import OverViewRecentSale from "./OverViewRecentSale";
 import NumberTicker from "@/components/ui/number-ticker";
 import axios from "axios";
 import { useSession } from "next-auth/react";
@@ -16,6 +14,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AiOutlineProduct } from "react-icons/ai";
 import { TbTruckLoading } from "react-icons/tb";
 import { HiOutlineTruck } from "react-icons/hi2";
+import { OverViewChart } from "./OverViewChart";
+import OverViewRecentSale from "./OverViewRecentSale";
 
 const OverViewPage = () => {
   const { data: session } = useSession();
@@ -58,7 +58,7 @@ const OverViewPage = () => {
     {
       title: "Total Products",
       headIcon: <AiOutlineProduct size={25} />,
-      tailIcon: <AiOutlineProduct size={30} strokeWidth={10}/>,
+      tailIcon: <AiOutlineProduct size={30} strokeWidth={10} />,
       contentData: totalProducts,
       footdata: "+20.1% from last month",
     },
@@ -71,7 +71,7 @@ const OverViewPage = () => {
     },
     {
       title: "Pending Orders",
-      headIcon: <TbTruckLoading strokeWidth={2} size={25}/>,
+      headIcon: <TbTruckLoading strokeWidth={2} size={25} />,
       tailIcon: <TbTruckLoading strokeWidth={2} size={30} />,
       contentData: "99999",
       footdata: "+20.1% from last month",
@@ -79,7 +79,7 @@ const OverViewPage = () => {
   ];
 
   return (
-    <div>
+    <div className=" container">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {data.map((item, index) => (
           <Card key={index}>

@@ -1,9 +1,8 @@
 "use client";
 
-import NavBar from "@/components/Header/NavBar";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { IndianRupee } from "lucide-react";
 import {
   Card,
@@ -34,7 +33,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import ProductEdit from "@/components/dashboard/products/ProductEdit";
+import ProductEdit from "@/components/products/ProductEdit";
+import Image from "next/image";
 
 const Page = () => {
   const router = useRouter();
@@ -42,7 +42,7 @@ const Page = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProductData = async () => {
+  const fetchProductData = useCallback(async () => {
     try {
       const response = await axios.get(`/api/product-details`, {
         params: { productId: params.id },
@@ -58,39 +58,39 @@ const Page = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id]);
 
   useEffect(() => {
     fetchProductData();
-  }, [params.id]);
+  }, [fetchProductData]);
 
   if (loading) {
     return (
-      <div className=" container">
+      <div className="container">
         <div className="flex justify-between mt-5">
           <Skeleton className="h-10 w-10" />
           <Skeleton className="h-10 w-14" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
-          <div className="flex justify-center ">
-            <Skeleton className=" h-80 w-80" />
+          <div className="flex justify-center">
+            <Skeleton className="h-80 w-80" />
           </div>
           <div>
-            <Skeleton className=" h-10 w-60" />
-            <div className=" mt-2 space-y-1">
-              <Skeleton className=" h-5 w-[80%]" />
-              <Skeleton className=" h-5 w-[80%]" />
-              <Skeleton className=" h-5 w-[80%]" />
-              <Skeleton className=" h-5 w-[80%]" />
-              <Skeleton className=" h-5 w-[80%]" />
+            <Skeleton className="h-10 w-60" />
+            <div className="mt-2 space-y-1">
+              <Skeleton className="h-5 w-[80%]" />
+              <Skeleton className="h-5 w-[80%]" />
+              <Skeleton className="h-5 w-[80%]" />
+              <Skeleton className="h-5 w-[80%]" />
+              <Skeleton className="h-5 w-[80%]" />
             </div>
             <div className="flex gap-5 my-3">
               <Skeleton className="h-10 w-20" />
               <Skeleton className="h-10 w-20" />
             </div>
             <Skeleton className="h-5 w-16" />
-            <Skeleton className=" h-60 my-5" />
-            <Skeleton className=" h-60 my-5" />
+            <Skeleton className="h-60 my-5" />
+            <Skeleton className="h-60 my-5" />
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@ const Page = () => {
 
   if (!product) {
     return (
-      <div className=" h-screen flex justify-center items-center text-red-500">
+      <div className="h-screen flex justify-center items-center text-red-500">
         Something went wrong...
       </div>
     );
@@ -111,9 +111,9 @@ const Page = () => {
 
   const images = product.productImages || [];
   const fallbackImage = "/path/to/placeholder-image.png";
+
   return (
     <div>
-      <NavBar />
       <div className="container py-3">
         <div className="py-1 flex justify-between items-center">
           <Button size="icon" variant="outline" onClick={handleBack}>
@@ -123,13 +123,12 @@ const Page = () => {
             <DialogTrigger asChild>
               <Button>Edit</Button>
             </DialogTrigger>
-            <DialogContent className="rounded-xl overflow-auto max-w-[95%] 2xl:max-w-[70%] md:max-w-[80%] sm:max-w-[70%]   max-h-[90%] min-[2320px]:max-w-[50%] min-[3000px]:max-w-[40%]  ">
+            <DialogContent className="rounded-xl overflow-auto max-w-[95%] 2xl:max-w-[70%] md:max-w-[80%] sm:max-w-[70%] max-h-[90%] min-[2320px]:max-w-[50%] min-[3000px]:max-w-[40%]">
               <ProductEdit product={product} />
             </DialogContent>
           </Dialog>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Carousel Section */}
           <div className="m-auto my-0">
             <Carousel className="w-full max-w-[17rem] sm:max-w-[20rem]">
               <CarouselContent>
@@ -139,7 +138,7 @@ const Page = () => {
                       <div className="p-1">
                         <Card className="overflow-hidden">
                           <CardContent className="flex aspect-square items-center justify-center p-0">
-                            <img
+                            <Image
                               src={`data:image/png;base64,${Buffer.from(
                                 image.data
                               ).toString("base64")}`}
@@ -156,7 +155,7 @@ const Page = () => {
                     <div className="p-1">
                       <Card>
                         <CardContent className="flex aspect-square items-center justify-center p-6">
-                          <img
+                          <Image
                             src={fallbackImage}
                             alt="Fallback Product Image"
                             className="w-full h-full object-cover"
@@ -172,7 +171,6 @@ const Page = () => {
             </Carousel>
           </div>
 
-          {/* Product Details */}
           <div className="space-y-4">
             <h1 className="text-lg font-semibold capitalize-first-letter">
               {product.productName}

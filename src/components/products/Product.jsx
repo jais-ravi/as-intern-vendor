@@ -24,7 +24,7 @@ export default function Product() {
     <div className="mx-auto py-6">
       <Card>
         <CardHeader className="text-center">{/*Showing 10 Products - Use Pagination Below to View More*/}</CardHeader>
-        <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <CardContent className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {!products
             ? Array.from({ length: 10 }).map((_, index) => (
                 <div key={index} className="p-2">
