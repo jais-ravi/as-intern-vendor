@@ -14,13 +14,11 @@ export async function middleware(req) {
     return NextResponse.next(); 
   }
 
-
-  if (pathname === "/Dashboard") {
+  if (pathname.startsWith("/dashboard")) {
     return NextResponse.redirect(new URL("/sign-in", req.url)); 
   }
 }
 
-
 export const config = {
-  matcher: ["/Dashboard"], 
+  matcher: ["/dashboard/:path*"], 
 };
