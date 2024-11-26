@@ -236,7 +236,7 @@ const UpdateImage = () => {
                   Please wait...
                 </>
               ) : (
-                "Update Images"
+                "Save Images"
               )}
             </Button>
           </div>
