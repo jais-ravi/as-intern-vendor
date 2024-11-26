@@ -3,10 +3,9 @@ import productModel from "@/model/product-model";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 
+
 export async function POST(request) {
-
   const formData = await request.formData();
-
 
   const productName = formData.get("productName");
   const productDes = formData.get("productDes");
@@ -14,7 +13,7 @@ export async function POST(request) {
   const sellingPrice = parseFloat(formData.get("sellingPrice"));
   const discount = parseFloat(formData.get("discount"));
   const productBrand = formData.get("productBrand");
-  const freeDelivery = formData.get("freeDelivery") === 'true';
+  const freeDelivery = formData.get("freeDelivery") === "true";
   const deliveryCharge = parseFloat(formData.get("deliveryCharge"));
   const category = formData.get("category");
   const tags = formData.get("tags") ? formData.get("tags").split(",") : [];
@@ -23,7 +22,6 @@ export async function POST(request) {
   await dbConnect();
 
   try {
-
     const session = await getServerSession({ req: request, ...authOptions });
     const vendorId = session?.user?._id;
     if (!vendorId) {
@@ -33,14 +31,14 @@ export async function POST(request) {
       );
     }
 
-
-    const imageBuffers = await Promise.all(images.map(async (file) => {
-      return {
-        data: Buffer.from(await file.arrayBuffer()),
-        contentType: file.type,
-      };
-    }));
-
+    const imageBuffers = await Promise.all(
+      images.map(async (file) => {
+        return {
+          data: Buffer.from(await file.arrayBuffer()),
+          contentType: file.type,
+        };
+      })
+    );
 
     const newProduct = new productModel({
       productName,
@@ -54,11 +52,11 @@ export async function POST(request) {
       category,
       tags,
       productImages: imageBuffers,
-      vendorId, 
+      vendorId,
     });
-
-
+    
     await newProduct.save();
+
 
     return new Response(
       JSON.stringify({

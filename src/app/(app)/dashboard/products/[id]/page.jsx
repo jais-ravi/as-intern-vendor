@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
@@ -8,7 +7,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,17 +22,8 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import ProductEdit from "@/components/products/ProductEdit";
 import Image from "next/image";
+
 
 const Page = () => {
   const router = useRouter();
@@ -67,7 +56,7 @@ const Page = () => {
   if (loading) {
     return (
       <div className="container">
-        <div className="flex justify-between mt-5">
+        <div className="flex justify-between">
           <Skeleton className="h-10 w-10" />
           <Skeleton className="h-10 w-14" />
         </div>
@@ -111,22 +100,17 @@ const Page = () => {
 
   const images = product.productImages || [];
   const fallbackImage = "/path/to/placeholder-image.png";
-
+  const editPage = () => {
+    router.push(`/dashboard/edit-product/${product._id}`);
+  };
   return (
     <div>
-      <div className="container py-3">
+      <div className="container">
         <div className="py-1 flex justify-between items-center">
           <Button size="icon" variant="outline" onClick={handleBack}>
             <ChevronLeft />
           </Button>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button>Edit</Button>
-            </DialogTrigger>
-            <DialogContent className="rounded-xl overflow-auto max-w-[95%] 2xl:max-w-[70%] md:max-w-[80%] sm:max-w-[70%] max-h-[90%] min-[2320px]:max-w-[50%] min-[3000px]:max-w-[40%]">
-              <ProductEdit product={product} />
-            </DialogContent>
-          </Dialog>
+          <Button onClick={editPage}>Edit</Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div className="m-auto my-0">
@@ -144,6 +128,8 @@ const Page = () => {
                               ).toString("base64")}`}
                               alt={`Product Image ${index + 1}`}
                               className="w-full h-full object-cover"
+                              width={100}
+                              height={100}
                             />
                           </CardContent>
                         </Card>
@@ -159,6 +145,8 @@ const Page = () => {
                             src={fallbackImage}
                             alt="Fallback Product Image"
                             className="w-full h-full object-cover"
+                            width={100}
+                            height={100}
                           />
                         </CardContent>
                       </Card>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Form,
   FormControl,
@@ -9,18 +9,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-
-import { productSchema } from "@/schemas/productSchema";
+import { updateProductSchema } from "@/schemas/updateProductSchema";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { Loader2, Trash } from "lucide-react";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import axios from "axios";
-import Image from "next/image";
 import {
   Card,
   CardContent,
@@ -28,34 +25,86 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Skeleton } from "@/components/ui/skeleton";
+import UpdateImage from "@/components/products/UpdateImage";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import UpdateProductImage from "@/components/products/UpdateImage";
 
-const AddProduct = () => {
+const ProductEdit = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [freeDelivery, setFreeDelivery] = useState(true);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
+  const params = useParams();
   const router = useRouter();
 
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProductData = useCallback(async () => {
+    try {
+      const response = await axios.get(`/api/product-details`, {
+        params: { productId: params.id },
+      });
+      setProduct(response.data.data);
+    } catch (error) {
+      console.error("Error in fetching product data", error);
+      toast({
+        title: "Server error",
+        description: error.message || "Something went wrong.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [params.id, toast]);
+
+  useEffect(() => {
+    fetchProductData();
+  }, [fetchProductData]);
+
   const form = useForm({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(updateProductSchema),
     defaultValues: {
       productName: "",
       productDes: "",
-      productImages: [],
       productPrice: "",
       sellingPrice: "",
       discount: "",
       productBrand: "",
       category: "",
       tags: "",
+      deliveryCharge: 0,
       freeDelivery: true,
-      deliveryCharge: "",
     },
   });
 
+  useEffect(() => {
+    if (product) {
+      form.reset({
+        productName: product.productName || "",
+        productDes: product.productDes || "",
+        productPrice: product.productPrice || "",
+        sellingPrice: product.sellingPrice || "",
+        discount: product.discount || "",
+        productBrand: product.productBrand || "",
+        category: product.category || "",
+        tags: product.tags || "",
+        deliveryCharge: product.deliveryCharge || 0,
+        freeDelivery: product.deliveryCharge <= 0,
+      });
+    }
+  }, [product, form]);
+
   const productPrice = form.watch("productPrice");
   const sellingPrice = form.watch("sellingPrice");
+  const freeDelivery = form.watch("freeDelivery");
 
   useEffect(() => {
     if (productPrice && sellingPrice) {
@@ -65,67 +114,23 @@ const AddProduct = () => {
   }, [productPrice, sellingPrice, form]);
 
   useEffect(() => {
+    const deliveryCharge = form.getValues("deliveryCharge");
+    if (deliveryCharge > 0) {
+      form.setValue("freeDelivery", false);
+    } else {
+      form.setValue("freeDelivery", true);
+    }
+  }, [form]);
+
+  useEffect(() => {
     if (freeDelivery) {
       form.setValue("deliveryCharge", 0);
-    } else {
-      form.setValue("deliveryCharge", "");
     }
   }, [freeDelivery, form]);
-
-  // Handle the file input change and set image previews
-  const handleFileChange = (event) => {
-    const files = Array.from(event.target.files);
-    if (selectedImages.length + files.length > 5) {
-      toast({
-        title: "Limit exceeded",
-        description: "You can only upload up to 5 images.",
-        variant: "destructive",
-      });
-      return; // Prevent adding more than 5 images
-    }
-    const newImages = [...selectedImages, ...files].slice(0, 5);
-    setSelectedImages(newImages);
-    form.setValue("productImages", newImages);
-  };
-
-  const handleDeleteImage = (index) => {
-    const updatedImages = selectedImages.filter((_, i) => i !== index);
-    setSelectedImages(updatedImages);
-    form.setValue("productImages", updatedImages);
-  };
-
-  // Drag and Drop Handlers
-  const handleDrop = (event) => {
-    event.preventDefault();
-    const files = Array.from(event.dataTransfer.files);
-    if (selectedImages.length + files.length > 5) {
-      toast({
-        title: "Limit exceeded",
-        description: "You can only upload up to 5 images.",
-        variant: "destructive",
-      });
-      return; // Prevent adding more than 5 images
-    }
-    const newImages = [...selectedImages, ...files].slice(0, 5);
-    setSelectedImages(newImages);
-    form.setValue("productImages", newImages);
-    setIsDragging(false);
-  };
-
-  const handleDragOver = (event) => {
-    event.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (event) => {
-    event.preventDefault();
-    setIsDragging(false);
-  };
 
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      console.log("sda",data.productImages)
       formData.append("productName", data.productName);
       formData.append("productDes", data.productDes);
       formData.append("productPrice", data.productPrice);
@@ -134,23 +139,24 @@ const AddProduct = () => {
       formData.append("productBrand", data.productBrand);
       formData.append("category", data.category);
       formData.append("tags", data.tags);
-      formData.append("freeDelivery", freeDelivery);
-      formData.append("deliveryCharge", freeDelivery ? 0 : data.deliveryCharge);
-
-      // Append the product image(s)
-      if (data.productImages && data.productImages.length > 0) {
-        data.productImages.forEach((file) => {
-          formData.append("productImages", file);
-        });
-      }
+      formData.append("freeDelivery", data.freeDelivery);
+      formData.append(
+        "deliveryCharge",
+        data.freeDelivery ? 0 : data.deliveryCharge
+      );
 
       setIsSubmitting(true);
+      const productId = product?._id;
 
-      const response = await axios.post("/api/create-product", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.patch(
+        `/api/update-product?productId=${productId}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.data.success) {
         toast({
@@ -158,17 +164,16 @@ const AddProduct = () => {
           description: response.data.message,
         });
         form.reset();
-        setSelectedImages([]);
-        router.push("/dashboard/products");
+        router.push(`/dashboard/products/${product._id}`);
       }
     } catch (error) {
-      console.error("Error in creating product", error);
+      console.error("Error in updating product", error);
 
       if (axios.isAxiosError(error)) {
         const errorMessage =
           error.response?.data.message || "Something went wrong!";
         toast({
-          title: "Product creation failed",
+          title: "Product updation failed",
           description: errorMessage,
           variant: "destructive",
         });
@@ -184,95 +189,72 @@ const AddProduct = () => {
     }
   };
 
+  const back = () => {
+    router.back();
+  };
+  if (loading) {
+    return (
+      <div className="container">
+        <Skeleton className="h-10 w-10" />
+        <div className="flex justify-center items-center flex-col gap-2">
+          <Skeleton className="h-8 w-72" />
+          <Skeleton className="h-6 w-96" />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+          <div className="flex  flex-col">
+            <Skeleton className="h-10 w-full " />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-80 w-full" />
+          </div>
+          <div>
+            <Skeleton className="h-10 w-full" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+            <Skeleton className="h-10 w-full my-5" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
-      <Card className="px-1 sm:px-8 md:px-16 lg:px-20 xl:px-24">
-        <CardHeader>
-          <CardTitle className="text-center text-3xl">Add Product</CardTitle>
+      <Button size="icon" variant="outline" onClick={back}>
+        <ChevronLeft />
+      </Button>
+      <div>
+        <CardHeader className="-mt-7">
+          <CardTitle className="text-center text-2xl ">
+            Update Product Details
+          </CardTitle>
           <CardDescription className="text-center text-base">
-            Enter your details below to add a new product
+            Enter your details below to update product details.
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-6 ">
+        <CardContent className="pt-6">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-6"
-              encType="multipart/form-data"
-            >
-              <div className="grid lg:grid-cols-2 gap-16 md:grid-cols-1 ">
-                <div>
-                  <FormField
-                    name="productImages"
-                    control={form.control}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Images</FormLabel>
-                        <FormControl>
-                          <div>
-                            <label
-                              htmlFor="file-upload"
-                              className={`flex justify-center items-center w-full py-20 border-2 border-dashed rounded-lg transition-colors hover:border-black bg-blue-50 duration-300 ${
-                                isDragging
-                                  ? "border-blue-500 bg-blue-50"
-                                  : "border-gray-300 bg-gray-100"
-                              } cursor-pointer`} // Make the entire area clickable
-                              onDrop={handleDrop}
-                              onDragOver={handleDragOver}
-                              onDragLeave={handleDragLeave}
-                            >
-                              <div className="text-center w-full h-full flex flex-col items-center">
-                                <p className="text-sm text-gray-500">
-                                  {isDragging
-                                    ? "Drop your images here..."
-                                    : "Click or drag images here to upload"}
-                                </p>
-                                <p className="text-xs text-gray-400 mt-2">
-                                  Max file size: 5MB
-                                </p>
-                                <input
-                                  id="file-upload"
-                                  type="file"
-                                  multiple
-                                  className="hidden"
-                                  accept="image/*"
-                                  onChange={handleFileChange}
-                                />
-                              </div>
-                            </label>
-
-                            {/* Display selected images */}
-                            {selectedImages.length > 0 && (
-                              <div className="mt-4 grid grid-cols-2 gap-4">
-                                {selectedImages.map((image, index) => (
-                                  <div key={index} className="relative">
-                                    <Image
-                                      src={URL.createObjectURL(image)}
-                                      alt={`Selected ${index}`}
-                                      className="h-full w-full object-cover rounded-md"
-                                      width="1"
-                                      height="1"
-                                    />
-                                    <Button
-                                      onClick={() => handleDeleteImage(index)}
-                                      className="absolute top-0 right-0 dark:bg-red-600"
-                                      variant="destructive"
-                                      size="icon"
-                                    >
-                                      <Trash className="w-4 h-4" />
-                                    </Button>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="flex flex-col gap-5">
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="grid lg:grid-cols-2 gap-16 md:grid-cols-1">
+                <div className="space-y-5">
+                  {/* image upload section (if any) */}
+                  <div className="space-y-3">
+                    <h1 className="text-sm font-medium">Product Images</h1>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="outline">Update Images</Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-h-[90%] overflow-y-auto ">
+                        <UpdateImage />
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                  {/* Form fields */}
                   <FormField
                     name="productName"
                     control={form.control}
@@ -303,6 +285,8 @@ const AddProduct = () => {
                       </FormItem>
                     )}
                   />
+                </div>
+                <div className="flex flex-col gap-5">
                   <FormField
                     name="productPrice"
                     control={form.control}
@@ -394,31 +378,28 @@ const AddProduct = () => {
                       </FormItem>
                     )}
                   />
-
-                  {/* Delivery Charge Section */}
                   <FormField
                     name="freeDelivery"
                     control={form.control}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Free Delivery</FormLabel>
-                        <FormControl>
-                          <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-3">
+                          <FormLabel>Free Delivery</FormLabel>
+                          <FormControl>
                             <Switch
-                              checked={freeDelivery}
-                              onCheckedChange={(checked) =>
-                                setFreeDelivery(checked)
-                              }
+                              checked={field.value}
+                              onCheckedChange={(checked) => {
+                                form.setValue("freeDelivery", checked);
+                              }}
                             />
-                            <span>{freeDelivery ? "Yes" : "No"}</span>
-                          </div>
-                        </FormControl>
+                          </FormControl>
+                          <span>{field.value ? "Yes" : "No"}</span>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
 
-                  {/* Show delivery charge only when free delivery is false */}
                   {!freeDelivery && (
                     <FormField
                       name="deliveryCharge"
@@ -438,25 +419,30 @@ const AddProduct = () => {
                       )}
                     />
                   )}
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full"
-                  >
-                    {isSubmitting && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    Add Product
-                  </Button>
+                  <div className="text-center">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full"
+                    >
+                      {isSubmitting ? (
+                        <div className="flex gap-2">
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Please wait...
+                        </div>
+                      ) : (
+                        "Update Product"
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </form>
           </Form>
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 };
 
-export default AddProduct;
+export default ProductEdit;
