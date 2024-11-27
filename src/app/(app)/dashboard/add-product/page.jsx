@@ -186,7 +186,7 @@ const AddProduct = () => {
 
   return (
     <div className="container">
-      <Card className="px-1 sm:px-8 md:px-16 lg:px-20 xl:px-24">
+      <div>
         <CardHeader>
           <CardTitle className="text-center text-3xl">Add Product</CardTitle>
           <CardDescription className="text-center text-base">
@@ -212,9 +212,9 @@ const AddProduct = () => {
                           <div>
                             <label
                               htmlFor="file-upload"
-                              className={`flex justify-center items-center w-full py-20 border-2 border-dashed rounded-lg transition-colors hover:border-black bg-blue-50 duration-300 ${
+                              className={`flex justify-center items-center w-full py-20 border-2 border-dashed rounded-lg transition-colors dark:bg-zinc-800 hover:border-zinc-500 bg-blue-50 duration-300 ${
                                 isDragging
-                                  ? "border-blue-500 bg-blue-50"
+                                  ? "border-zinc-500 bg-blue-50"
                                   : "border-gray-300 bg-gray-100"
                               } cursor-pointer`} // Make the entire area clickable
                               onDrop={handleDrop}
@@ -454,7 +454,7 @@ const AddProduct = () => {
             </form>
           </Form>
         </CardContent>
-      </Card>
+      </div>
     </div>
   );
 };

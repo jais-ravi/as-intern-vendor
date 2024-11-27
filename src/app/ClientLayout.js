@@ -10,19 +10,18 @@ import { Separator } from "@/components/ui/separator";
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
-  const excludedRoutes = [
-    "/",
-    "/sign-in",
-    "/sign-up",
-    "/forgot-password",
-    "/vendor-confirmation",
-  ];
-  const dynamicExcludedRoutes = ["/verify"];
-  const isExcludedRoute =
-    excludedRoutes.includes(pathname) ||
-    dynamicExcludedRoutes.some((route) => pathname.startsWith(route));
 
-  const shouldApplyLayout = !isExcludedRoute;
+
+  const includedRoutes = [
+    "/dashboard/add-product",
+    "/dashboard/edit-product",
+    "/dashboard/overview",
+    "/dashboard/products",
+  ];
+
+
+  const isIncludedRoute = includedRoutes.includes(pathname) ||
+    includedRoutes.some(route => pathname.startsWith(route));
 
   return (
     <ThemeProvider
@@ -32,17 +31,17 @@ export default function ClientLayout({ children }) {
       disableTransitionOnChange
     >
       <AuthProvider>
-        {shouldApplyLayout ? (
+        {isIncludedRoute ? (
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
               <Header />
               <Separator />
-              <div className=" w-full pt-5">{children}</div>
+              <div className="w-full pt-5">{children}</div>
             </SidebarInset>
           </SidebarProvider>
         ) : (
-          children
+          <div className="w-full pt-5">{children}</div>
         )}
         <Toaster />
       </AuthProvider>
