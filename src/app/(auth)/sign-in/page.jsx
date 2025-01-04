@@ -69,7 +69,8 @@ export default function SignInPage() {
         });
       }
     }
-    if (result?.url) {
+    if (result?.ok) {
+      console.log(result)
       toast({
         title: "Login successful",
         // description: "Login done",
