@@ -28,6 +28,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const AddProduct = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -125,7 +133,7 @@ const AddProduct = () => {
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
-      console.log("sda",data.productImages)
+      console.log("sda", data.productImages);
       formData.append("productName", data.productName);
       formData.append("productDes", data.productDes);
       formData.append("productPrice", data.productPrice);
@@ -182,18 +190,23 @@ const AddProduct = () => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
 
   return (
-    <div className="container">
-      <div>
-        <CardHeader>
-          <CardTitle className="text-center text-3xl">Add Product</CardTitle>
-          <CardDescription className="text-center text-base">
-            Enter your details below to add a new product
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6 ">
+
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>Add Product</Button>
+        </DialogTrigger>
+        <DialogContent className=" max-h-[95vh] max-w-[70rem] overflow-auto">  
+          <DialogHeader>
+            <DialogTitle className="text-center text-3xl">
+              Add Product
+            </DialogTitle>
+            <DialogDescription className="text-center text-base">
+              Enter your details below to add a new product
+            </DialogDescription>
+          </DialogHeader>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -453,9 +466,9 @@ const AddProduct = () => {
               </div>
             </form>
           </Form>
-        </CardContent>
-      </div>
-    </div>
+        </DialogContent>
+      </Dialog>
+
   );
 };
 

@@ -30,14 +30,6 @@ const vendorSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    product: {
-      type: Array,
-      default: [],
-    },
-    orders: {
-      type: Array,
-      default: [],
-    },
     ownerReview: {
       type: Array,
       default: [],
@@ -50,7 +42,7 @@ const vendorSchema = mongoose.Schema(
       type: String,
     },
     verifyCodeExpiry: {
-      type: Date, 
+      type: Date,
     },
     address: {
       type: String,
@@ -59,9 +51,21 @@ const vendorSchema = mongoose.Schema(
       type: String,
       default: "vendor",
     },
+    bankDetails: {
+      accountNumber: { type: String, default: null },
+      ifsc: { type: String, default: null },
+      accountHolderName: { type: String, default: null },
+    },
+    razorpayContactId: {
+      type: String,
+      default: null,
+    },
+    fundAccountId: {
+      type: String,
+      default: null,
+    },
   },
-  { collection: "vendor",timestamps: true,  }
-  
+  { collection: "vendor", timestamps: true }
 );
 
 const vendorModel =

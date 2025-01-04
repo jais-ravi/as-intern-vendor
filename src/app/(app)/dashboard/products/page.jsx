@@ -4,6 +4,8 @@ import { useSession } from "next-auth/react";
 import useSWR from "swr";
 import axios from "axios";
 import ProductCard from "@/components/products/ProductCard";
+import { Button } from "@/components/ui/button";
+import AddProduct from "@/components/products/AddProduct";
 
 // Fetcher function for SWR
 const fetcher = (url) => axios.get(url).then((res) => res.data);
@@ -25,8 +27,15 @@ export default function Product() {
     );
 
   return (
-    <div className=" container py-6">
-      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className=" container">
+      <div className="flex justify-between items-center">
+        <div></div>
+        <div>
+          <AddProduct/>
+        </div>
+      </div>
+
+      <div className=" flex flex-wrap gap-4">
         {!products ? (
           Array.from({ length: 10 }).map((_, index) => (
             <div key={index} className="p-2">
@@ -39,7 +48,7 @@ export default function Product() {
           </div>
         ) : (
           products.map((product) => (
-            <div key={product._id} className="flex justify-center items-center">
+            <div key={product._id} className="flex justify-center items-center ">
               <ProductCard product={product} isLoading={false} />
             </div>
           ))

@@ -3,19 +3,17 @@
 import {
   Card,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { IndianRupee } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function ProductCard({ product, isLoading }) {
-  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -32,52 +30,55 @@ export default function ProductCard({ product, isLoading }) {
 
   const firstImageBuffer = product.productImages[0]?.data;
   const imageSrc = firstImageBuffer
-    ? `data:image/png;base64,${Buffer.from(firstImageBuffer).toString("base64")}`
+    ? `data:image/png;base64,${Buffer.from(firstImageBuffer).toString(
+        "base64"
+      )}`
     : "/path/to/placeholder-image.png"; // Provide a fallback image
 
-  const handleEdit = () => {
-    router.push(`/dashboard/products/${product._id}`);
-  };
 
   return (
-    <Card className="bg-white rounded-xl shadow-lg max-w-72 min-w-64 dark:bg-[#2A2A3B]">
-      <CardHeader className="p-3">
-        <Image
-          src={imageSrc}
-          alt={product.productName}
-          className="w-full h-64 object-cover rounded-t-lg"
-          width={10}
-          height={10}
-        />
-      </CardHeader>
-      <CardContent className="pb-1">
-        <CardTitle className="text-base font-semibold mb-1 capitalize-first-letter">
-          {product.productName}
-        </CardTitle>
-        <div className="text-xs text-gray-500 mb-1.5 line-clamp-2 capitalize-first-letter">
-          {product.productDes}
-        </div>
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex gap-2">
-            <p className="text-lg font-bold flex items-center">
-              <IndianRupee size="15" strokeWidth={3} />
-              {product.sellingPrice}
-            </p>
+    <Card className=" rounded-xl shadow-lg w-48 sm:w-60 hover:cursor-pointer">
+      <Link href={`/dashboard/products/${product._id}`} passHref>
+        <div className="cursor-pointer relative">
+          <div className="absolute top-0 right-0 p-2">
             {product.discount > 0 && (
-              <p className="text-gray-500 text-sm line-through flex items-center">
-                <IndianRupee size="15" strokeWidth={3} />
-                {product.productPrice}
-              </p>
+              <Badge className="text-xs">{product.discount}% OFF</Badge>
             )}
           </div>
-          {product.discount > 0 && <Badge>{product.discount}% OFF</Badge>}
+          <CardHeader className="p-0 pb-2">
+            <Image
+              src={imageSrc}
+              alt={product.productName}
+              className="w-48 h-48 sm:w-60 sm:h-60 object-cover rounded-t-lg"
+              width={200}
+              height={200}
+            />
+          </CardHeader>
+          <CardContent className=" pb-2 px-3 space-y-1">
+            <CardTitle className="text-base font-semibold  capitalize">
+              {product.productName}
+            </CardTitle>
+            <CardDescription className="text-xs text-gray-500 line-clamp-2">
+              {product.productDes}
+            </CardDescription>
+            <div className="mb-1 flex gap-1">
+              <p className="text-lg font-bold flex items-center">
+                <IndianRupee size="15" strokeWidth={3} />
+                {product.sellingPrice}
+              </p>
+              <div className="flex gap-3">
+                {product.productPrice > 0 && (
+                  <p className="text-gray-500 text-sm font-semibold line-through flex items-center">
+                    <IndianRupee size="13" strokeWidth={3} />
+                    {product.productPrice}
+                  </p>
+                )}
+              </div>
+            </div>
+          </CardContent>
         </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={handleEdit}>
-          Edit
-        </Button>
-      </CardFooter>
+      </Link>
+
     </Card>
   );
 }
