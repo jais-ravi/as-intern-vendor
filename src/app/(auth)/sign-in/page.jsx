@@ -75,7 +75,7 @@ export default function SignInPage() {
         // description: "Login done",
         // variant: "",
       });
-      router.replace("/dashboard/overview");
+      router.push("/dashboard/overview");
     }
   };
   return (
