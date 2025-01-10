@@ -14,7 +14,7 @@ import { HiOutlineTruck } from "react-icons/hi2";
 import { FaUsers } from "react-icons/fa6";
 import { AiFillShop } from "react-icons/ai";
 import { TotalUserChart } from "@/components/Charts/TotalUserChart";
-import { TotalVendorChart } from "@/components/Charts/TotalvendorChart";
+import { TotalVendorChart } from "@/components/Charts/TotalVendorChart";
 
 const Page = () => {
   const { data: session } = useSession();
