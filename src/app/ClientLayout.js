@@ -17,6 +17,8 @@ export default function ClientLayout({ children }) {
     "/dashboard/edit-product",
     "/dashboard/overview",
     "/dashboard/products",
+    "/dashboard/orders",
+    "/admin-dashboard"
   ];
 
 
@@ -37,11 +39,11 @@ export default function ClientLayout({ children }) {
             <SidebarInset>
               <Header />
               <Separator />
-              <div className="w-full pt-5">{children}</div>
+              <div className="w-full ">{children}</div>
             </SidebarInset>
           </SidebarProvider>
         ) : (
-          <div className="w-full pt-5">{children}</div>
+          <div className="w-full">{children}</div>
         )}
         <Toaster />
       </AuthProvider>

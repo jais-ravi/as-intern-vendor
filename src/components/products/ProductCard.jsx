@@ -14,10 +14,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ProductCard({ product, isLoading }) {
-
   if (isLoading) {
     return (
-      <Card className="animate-pulse  p-4 rounded-lg max-w-72 min-w-64">
+      <Card className="animate-pulse p-1 rounded-lg w-full ">
         <CardContent className="space-y-4">
           <Skeleton className="h-40 rounded" />
           <Skeleton className="h-4 rounded w-1/2" />
@@ -35,9 +34,8 @@ export default function ProductCard({ product, isLoading }) {
       )}`
     : "/path/to/placeholder-image.png"; // Provide a fallback image
 
-
   return (
-    <Card className=" rounded-xl shadow-lg w-48 sm:w-60 hover:cursor-pointer">
+    <Card className=" rounded-xl shadow-lg w-full hover:cursor-pointer overflow-hidden hover:scale-105 transition-transform duration-300">
       <Link href={`/dashboard/products/${product._id}`} passHref>
         <div className="cursor-pointer relative">
           <div className="absolute top-0 right-0 p-2">
@@ -45,20 +43,20 @@ export default function ProductCard({ product, isLoading }) {
               <Badge className="text-xs">{product.discount}% OFF</Badge>
             )}
           </div>
-          <CardHeader className="p-0 pb-2">
+          <CardHeader className="p-0 pb-2 flex justify-center items-center">
             <Image
               src={imageSrc}
               alt={product.productName}
-              className="w-48 h-48 sm:w-60 sm:h-60 object-cover rounded-t-lg"
+              className="w-48 h-48 sm:w-60 sm:h-60 object-cover "
               width={200}
               height={200}
             />
           </CardHeader>
           <CardContent className=" pb-2 px-3 space-y-1">
-            <CardTitle className="text-base font-semibold  capitalize">
+            <CardTitle className="text-base font-semibold  capitalize line-clamp-2">
               {product.productName}
             </CardTitle>
-            <CardDescription className="text-xs text-gray-500 line-clamp-2">
+            <CardDescription className="text-xs text-gray-500 line-clamp-1">
               {product.productDes}
             </CardDescription>
             <div className="mb-1 flex gap-1">
@@ -78,7 +76,6 @@ export default function ProductCard({ product, isLoading }) {
           </CardContent>
         </div>
       </Link>
-
     </Card>
   );
 }

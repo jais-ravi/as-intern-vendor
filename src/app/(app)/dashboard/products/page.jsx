@@ -27,15 +27,16 @@ export default function Product() {
     );
 
   return (
-    <div className=" container">
-      <div className="flex justify-between items-center">
+    <div className="container p-1 mt-5">
+      <div className=" px-2 flex justify-between items-center mb-5">
         <div></div>
         <div>
-          <AddProduct/>
+          <AddProduct />
         </div>
       </div>
 
-      <div className=" flex flex-wrap gap-4">
+
+      <div className="grid    grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {!products ? (
           Array.from({ length: 10 }).map((_, index) => (
             <div key={index} className="p-2">
@@ -48,7 +49,7 @@ export default function Product() {
           </div>
         ) : (
           products.map((product) => (
-            <div key={product._id} className="flex justify-center items-center ">
+            <div key={product._id} className="p-2">
               <ProductCard product={product} isLoading={false} />
             </div>
           ))

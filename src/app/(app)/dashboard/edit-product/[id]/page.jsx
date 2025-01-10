@@ -194,7 +194,7 @@ const ProductEdit = () => {
   };
   if (loading) {
     return (
-      <div className="container">
+      <div className="container mt-5">
         <Skeleton className="h-10 w-10" />
         <div className="flex justify-center items-center flex-col gap-2">
           <Skeleton className="h-8 w-72" />
@@ -224,7 +224,7 @@ const ProductEdit = () => {
   }
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <Button size="icon" variant="outline" onClick={back}>
         <ChevronLeft />
       </Button>

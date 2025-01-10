@@ -70,7 +70,6 @@ export default function SignInPage() {
       }
     }
     if (result?.ok) {
-      console.log(result)
       toast({
         title: "Login successful",
         // description: "Login done",
